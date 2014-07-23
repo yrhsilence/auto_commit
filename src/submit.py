@@ -4,7 +4,6 @@ import os
 import sys
 import commands
 
-sys.path.append("..")
 from etc import default as config
 logger = config.logger
 

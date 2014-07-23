@@ -1,0 +1,49 @@
+#!/bin/bash
+sleep 30
+BIN_DIR=$(cd "$(dirname "$0")"; pwd)
+BASE_DIR=$(dirname $BIN_DIR);
+ETC_DIR="$BASE_DIR/etc";
+RUN_DIR="$BASE_DIR/run";
+
+pids=`cat $RUN_DIR/pid`
+num=$1
+
+function kill_procs()
+{
+    pids=`cat $RUN_DIR/pid`
+    for (( i = 1; i <= $num; i++ ));
+    do
+        pid=`echo $pids | awk -F ' ' '{print $'"$i"'}'`
+        if [ -n "$pid" ]
+        then
+            kill $pid 
+        fi
+    done
+    rm $RUN_DIR/pid
+}
+
+function watch_all_pids()
+{
+    pids=`cat $RUN_DIR/pid`
+    for (( i = 1; i <= $num; i++ ));
+    do
+        pid=`echo $pids | awk -F ' ' '{print $'"$i"'}'`
+        if [ ! -e /proc/$pid ]
+        then
+            sed -i 's/\b'"$pid"'\b //' $RUN_DIR/pid
+            kill_procs
+            sleep 10
+            python $BIN_DIR/engine.py & 
+            exit 0
+        fi
+    done
+}
+
+if [ -n "$pids" ]
+then
+    while true;
+    do
+        watch_all_pids
+        sleep 300
+    done
+fi

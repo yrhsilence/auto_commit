@@ -3,7 +3,6 @@
 import os
 import sys
 
-sys.path.append("..")
 from etc import default as config
 logger = config.logger
 

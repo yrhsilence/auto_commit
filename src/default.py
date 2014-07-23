@@ -11,7 +11,6 @@ import function
 from mail import send_mail
 from submit import send_request
 
-sys.path.append("..")
 from etc import default as config
 logger = config.logger
 

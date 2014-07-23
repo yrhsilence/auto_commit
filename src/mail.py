@@ -9,7 +9,6 @@ import traceback
 from email.mime.text import MIMEText
 from email.MIMEMultipart import MIMEMultipart
 
-sys.path.append("..")
 from etc import default as config
 logger = config.logger
 
