@@ -3,6 +3,10 @@ auto_commit
 
 Monitor the specified folder and process.
 
-cd ~/src
+install:
+aptitude install python-pyinotify
+aptitude install python-daemon
 
+Start: 
+cd ~/src
 python engine.py
