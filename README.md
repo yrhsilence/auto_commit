@@ -14,4 +14,4 @@ Start:
 
     cd ~/src
 
-    python engine.py
+    bash server start
