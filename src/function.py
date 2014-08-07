@@ -3,9 +3,7 @@
 import os
 import sys
 
-from etc import default as config
-logger = config.logger
-
+from etc import common as config
 TASK_FILE = config.used_task_file
 
 # Determine whether a task can be performed.

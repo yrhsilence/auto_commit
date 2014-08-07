@@ -5,10 +5,8 @@ import sys
 import subprocess
 
 import daemon
-from default import monitor as default_monitor
-from wbdam import monitor as wbdam_monitor
 
-from etc import default as config
+from etc import common as config
 logger = config.logger
 
 CWD = os.path.dirname(__file__)
@@ -21,25 +19,24 @@ def write_pid(p_list):
 
 def monitor():
     try:
+        # Process the tasks
+        task_list = config.TASK_LIST
         p_list = []
-        cmd = []
-        cmd.append("python")
-        cmd.append(os.path.join(CWD, "default.py"))
-        pdefault = subprocess.Popen(cmd)
-        p_list.append(pdefault.pid)
-
-        cmd = []
-        cmd.append("python")
-        cmd.append(os.path.join(CWD, "wbdam.py"))
-        pwbdam = subprocess.Popen(cmd)
-        p_list.append(pwbdam.pid)
+        for task in task_list:
+            cmd = []
+            cmd.append("python")
+            cmd.append(os.path.join(CWD, task))
+            pdefault = subprocess.Popen(cmd)
+            p_list.append(pdefault.pid)
         
         logger.info("pid: %s" %p_list)
         write_pid(p_list)
 
+        # Start watchdog to monitor pids.
         cmd = [] 
+        cmd.append("bash")
         cmd.append(os.path.join(CWD, "auto_commit_watchdog"))
-        cmd.append("2")
+        cmd.append(str(len(task_list)))
         subprocess.Popen(cmd)
     except Exception, e:
         logger.error(e)

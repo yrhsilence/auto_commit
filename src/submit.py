@@ -4,7 +4,7 @@ import os
 import sys
 import commands
 
-from etc import default as config
+from etc import common as config
 logger = config.logger
 
 #Sent request to DAMService
